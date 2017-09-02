@@ -1,0 +1,3 @@
+# VoiceReader
+
+The purpose of this project is...
