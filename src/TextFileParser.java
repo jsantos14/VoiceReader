@@ -1,19 +1,16 @@
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class TextFileParser
 {
     public static ArrayList<String> parseText (String filePath) throws
-            FileNotFoundException
+            FileNotFoundException, IOException
     {
-        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        // This is where the code for reading a text file will go
 
-        
-
-        ArrayList<String> words = new ArrayList<>();
-
-        return words;
+        return new ArrayList<String>();
     }
 }
