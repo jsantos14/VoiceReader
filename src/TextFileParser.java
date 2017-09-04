@@ -1,16 +1,38 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Scanner;
 
+
+/**
+ * Parses a text file.
+ */
 public class TextFileParser
 {
-    public static ArrayList<String> parseText (String filePath) throws
-            FileNotFoundException, IOException
+    public static ArrayList<String> parseText( String filePath ) throws
+            IOException
     {
-        // This is where the code for reading a text file will go
+        Scanner scanner = new Scanner(new File(filePath));
+        ArrayList<String> words = new ArrayList<>();
 
-        return new ArrayList<String>();
+        while (scanner.hasNext()) {
+            words.add(scanner.next());
+        }
+
+        return words;
+    }
+
+
+    public static ArrayList<String> parseText( Path filePath ) throws
+            IOException
+    {
+        Scanner scanner = new Scanner(filePath);
+        ArrayList<String> words = new ArrayList<>();
+
+        while (scanner.hasNext()) {
+            words.add(scanner.next());
+        }
+
+        return words;
     }
 }
