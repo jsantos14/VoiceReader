@@ -5,6 +5,7 @@ import javax.sound.sampled.*;
 import javax.swing.*;
    
 // To play sound using Clip, the process need to be alive.
+// Yeah
 // Hence, we use a Swing application.
 @SuppressWarnings("serial")
 public class SoundClipTest extends JFrame {
