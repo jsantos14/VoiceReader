@@ -4,7 +4,6 @@ import javax.swing.*;
    
 // To play sound using Clip, the process need to be alive.
 // Hence, we use a Swing application.
-@SuppressWarnings("serial")
 public class SoundClipTest extends JFrame {
    
    // Constructor
@@ -31,7 +30,7 @@ public class SoundClipTest extends JFrame {
          
          // Get a sound clip resource.
          Clip clip = AudioSystem.getClip();
-         
+
          // Open audio clip and load samples from the audio input stream.
          clip.open(appendedFiles);
          clip.start();
