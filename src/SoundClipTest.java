@@ -1,5 +1,3 @@
-// Hello World
-
 import java.io.*;
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -19,14 +17,24 @@ public class SoundClipTest extends JFrame {
    
       try {
          // Open an audio input stream.
-         File soundFile = new File("C:\\Users\\Ryan\\Dropbox\\Junior Fall Semester\\Eclipse\\Audio\\DeJager.wav");
-         AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
-
+         File soundFile = new File(
+                              "C:\\Users\\Ryan\\Dropbox\\Junior Fall Semester"
+                              + "\\Eclipse\\Audio\\DeJager.wav");
+         AudioInputStream audio1 = AudioSystem.getAudioInputStream(soundFile);
+         AudioInputStream audio2 = AudioSystem.getAudioInputStream(soundFile);
+         
+         // combine the WAV file 
+         AudioInputStream appendedFiles = 
+               new AudioInputStream(
+                   new SequenceInputStream(audio1, audio2),     
+                   audio1.getFormat(), 
+                   audio1.getFrameLength() + audio2.getFrameLength());
+         
          // Get a sound clip resource.
          Clip clip = AudioSystem.getClip();
          
          // Open audio clip and load samples from the audio input stream.
-         clip.open(audioIn);
+         clip.open(appendedFiles);
          clip.start();
          
       } catch (UnsupportedAudioFileException e) {
