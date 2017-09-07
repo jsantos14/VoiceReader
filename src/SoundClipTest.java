@@ -17,12 +17,15 @@ public class SoundClipTest extends JFrame {
 
       try {
          // Open an audio input stream.
-         File soundFile = new File(
-                              "C:\\Users\\Ryan\\Dropbox\\Junior Fall Semester"
-                              + "\\Eclipse\\Audio\\DeJager.wav");
-         
-         // combine the WAV file 
+         File soundFile = new File("C:\\Users\\Ryan\\Music\\Sounds\\hello.wav");
          test.addAudio(soundFile);
+         soundFile = new File("C:\\Users\\Ryan\\Music\\Sounds\\this.wav");
+         test.addAudio(soundFile);
+         soundFile = new File("C:\\Users\\Ryan\\Music\\Sounds\\is.wav");
+         test.addAudio(soundFile);
+         soundFile = new File("C:\\Users\\Ryan\\Music\\Sounds\\a.wav");
+         test.addAudio(soundFile);
+         soundFile = new File("C:\\Users\\Ryan\\Music\\Sounds\\test.wav");
          test.addAudio(soundFile);
 
          // Get a sound clip resource.
