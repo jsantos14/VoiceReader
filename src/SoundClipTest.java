@@ -12,27 +12,24 @@ public class SoundClipTest extends JFrame {
       this.setTitle("Test Sound Clip");
       this.setSize(300, 200);
       this.setVisible(true);
-   
+
+      AudioParser test = new AudioParser();
+
       try {
          // Open an audio input stream.
          File soundFile = new File(
                               "C:\\Users\\Ryan\\Dropbox\\Junior Fall Semester"
                               + "\\Eclipse\\Audio\\DeJager.wav");
-         AudioInputStream audio1 = AudioSystem.getAudioInputStream(soundFile);
-         AudioInputStream audio2 = AudioSystem.getAudioInputStream(soundFile);
          
          // combine the WAV file 
-         AudioInputStream appendedFiles = 
-               new AudioInputStream(
-                   new SequenceInputStream(audio1, audio2),     
-                   audio1.getFormat(), 
-                   audio1.getFrameLength() + audio2.getFrameLength());
-         
+         test.addAudio(soundFile);
+         test.addAudio(soundFile);
+
          // Get a sound clip resource.
-         Clip clip = AudioSystem.getClip();
+         Clip clip = test.getAudio();
 
          // Open audio clip and load samples from the audio input stream.
-         clip.open(appendedFiles);
+         //clip.open(appendedFiles);
          clip.start();
          
       } catch (UnsupportedAudioFileException e) {
