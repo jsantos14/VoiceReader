@@ -47,7 +47,7 @@ public class Pronunciation
 
          // If Y is the first letter in a Syllable, it is a constenant. Otherwise it is a vowel
          // This only works right now if it is the first letter of the first syllable.
-         if (i == 0 && letters.get(i).getChar() == 'y') letters.get(i).setVowel(false);
+         if (i == 0 && letters.get(i).getChar() == "y") letters.get(i).setVowel(false);
          // Checks to set any vowels as silent so syllables can be formed.
          if (wasVowel && letters.get(i).isVowel())
          {
@@ -56,7 +56,7 @@ public class Pronunciation
          wasVowel = letters.get(i).isVowel();
       }
       // Checks if the last letter is an 'e' in which case it is silent (hopefully)
-      if (letters.get(letters.size() - 1).getChar() == 'e') letters.get(letters.size() - 1).setSilent(true);
+      if (letters.get(letters.size() - 1).getChar() == "e") letters.get(letters.size() - 1).setSilent(true);
       
       syllables = toSyllables(letters);
       //System.out.println("Syllables: ");
@@ -77,7 +77,7 @@ public class Pronunciation
       int syllableCount = 0;  
       ArrayList<ArrayList<PhonicCharacter>> syllables;
       // Checks for any Dipthongs to determine syllable count. 
-      char prevChar = ' ';
+      String prevChar = null;
       int dipthongCount = 0;
       
       // Accents need to be already determened before this point. ******************************Rule ORDER
@@ -89,7 +89,7 @@ public class Pronunciation
             syllableCount++; // count shit
             //System.out.println("Vowel++");
          }
-         if (prevChar == 'o' && ( (letters.get(i).getChar() == 'i') ||(letters.get(i).getChar() == 'w') || (letters.get(i).getChar() == 'o')))
+         if (prevChar == "o" && ( (letters.get(i).getChar() == "i") ||(letters.get(i).getChar() == "w") || (letters.get(i).getChar() == "o")))
          {
             dipthongCount++;
             System.out.println("Dipthong");
