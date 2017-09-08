@@ -17,16 +17,19 @@ public class SoundClipTest extends JFrame {
       AudioParser test = new AudioParser();
 
       try {
+         String filePath = System.getProperty("user.home") +
+                 "/IdeaProjects/VoiceReader/src";
+
          // Open an audio input stream.
-         File soundFile = new File("Sounds\\hello.wav");
+         File soundFile = new File(filePath + "/Sounds/hello.wav");
          test.addAudio(soundFile);
-         soundFile = new File("Sounds\\this.wav");
+         soundFile = new File(filePath + "/Sounds/this.wav");
          test.addAudio(soundFile);
-         soundFile = new File("Sounds\\is.wav");
+         soundFile = new File(filePath + "/Sounds/is.wav");
          test.addAudio(soundFile);
-         soundFile = new File("Sounds\\a.wav");
+         soundFile = new File(filePath + "/Sounds/a.wav");
          test.addAudio(soundFile);
-         soundFile = new File("Sounds\\test.wav");
+         soundFile = new File(filePath + "/Sounds/test.wav");
          test.addAudio(soundFile);
 
          // Get a sound clip resource.
