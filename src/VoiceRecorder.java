@@ -6,16 +6,16 @@ import java.io.*;
  * A sample program is to demonstrate how to record sound in Java author:
  * www.codejava.net
  */
-public class VoiceRecorder
+public class VoiceRecorder implements Runnable
 {
 	// record duration, in milliseconds
 	static final long RECORD_TIME = 60000;  // 1 minute
 
 	String filePath = System.getProperty("user.home") +
-			"/IdeaProjects/VoiceReader/src";
+			"/IdeaProjects/VoiceReader/src/Sounds";
 
 	// path of the wav file
-	File wavFile = new File(filePath + "/RecordAudio.wav");
+	File wavFile = new File(filePath + "/RecordedAudio.wav");
 
 	// format of audio file
 	AudioFileFormat.Type fileType = AudioFileFormat.Type.WAVE;
@@ -41,7 +41,7 @@ public class VoiceRecorder
 	/**
 	 * Captures the sound and record into a WAV file
 	 */
-	void start()
+	public void run()
 	{
 		try
 		{
@@ -81,10 +81,12 @@ public class VoiceRecorder
 	/**
 	 * Closes the target data line to finish capturing and recording
 	 */
-	void finish()
+	public void finish()
 	{
+		System.out.println("Stopped recording");
 		line.stop();
 		line.close();
+		Thread.currentThread().interrupt();
 	}
 
 	/**
