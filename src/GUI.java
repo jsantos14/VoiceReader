@@ -1,8 +1,12 @@
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 
 /**
@@ -52,10 +56,49 @@ public class GUI extends JPanel
 					ArrayList<String> listOfWords = TextFileParser.parseText
 							(absFilePath);
 
+					AudioParser audioParser = new AudioParser();
+
+					JFrame newImageFrame = new JFrame();
+					JLabel imageHolder = new JLabel(new ImageIcon
+							("DejagerMaistro.jpg"));
+					newImageFrame.add(imageHolder);
+					newImageFrame.setSize(imageHolder.getPreferredSize());
+					newImageFrame.setVisible(true);
+
+					for ( String word : listOfWords )
+					{
+						for ( File file : Pronunciation.wordToFile(word) )
+						{
+							try
+							{
+								audioParser.addAudio(file);
+							}
+							catch (UnsupportedAudioFileException e)
+							{
+								e.printStackTrace();
+							}
+						}
+					}
+
+					Clip clip;
+
+					try
+					{
+						clip = audioParser.getAudio();
+						clip.start();
+					}
+					catch (LineUnavailableException e)
+					{
+						e.printStackTrace();
+					}
+
+
+
 				}
 				catch (IOException ex)
 				{
-					JOptionPane.showMessageDialog(null, "You idiot!");
+					JOptionPane.showMessageDialog(null, "You idiot!" + ex
+							.getMessage());
 				}
 			}
 
@@ -68,6 +111,11 @@ public class GUI extends JPanel
 
 		});
 
+		JLabel welcomeLabel = new JLabel("Welcome to the best app youll ever "
+				+ "use!");
+		welcomeLabel.setFont(new Font("Times new roman", Font.BOLD, 12));
+
+		frame.add(welcomeLabel);
 		frame.add(startButton);
 		frame.add(stopButton);
 		frame.add(importTextButton);

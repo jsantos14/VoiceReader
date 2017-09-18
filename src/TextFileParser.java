@@ -5,7 +5,8 @@ import java.util.Scanner;
 
 
 /**
- * Parses a text file.
+ * Parses a text file and returns the an array list of all the words in that
+ * text file.
  */
 public class TextFileParser
 {
@@ -15,7 +16,8 @@ public class TextFileParser
         Scanner scanner = new Scanner(new File(filePath));
         ArrayList<String> words = new ArrayList<>();
 
-        while (scanner.hasNext()) {
+        while (scanner.hasNext())
+        {
             words.add(scanner.next());
         }
 
@@ -29,7 +31,8 @@ public class TextFileParser
         Scanner scanner = new Scanner(filePath);
         ArrayList<String> words = new ArrayList<>();
 
-        while (scanner.hasNext()) {
+        while (scanner.hasNext())
+        {
             words.add(scanner.next());
         }
 
