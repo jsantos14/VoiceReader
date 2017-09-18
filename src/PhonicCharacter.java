@@ -22,6 +22,14 @@ public class PhonicCharacter
    // An Array to determine if a character is a vowel
    private static final char[] VOWELS = {'a','e','i','o','u','y'};
    
+   // An Array to determine if two characters are diagraphs
+   private static final String[] DIAGRAPHS = {"ch","sh","th","hw","ng","nk"};
+   
+   // An Array to determine if two characters are dipthongs
+   private static final String[] DIPTHONGS = {"oi","ow","oo"};
+   
+   // An Array to determine if two characters are rControlledVowels
+   private static final String[] R_CONTROLLED_VOWELS = {"ur","ar","or"};
    /*
     * Constructor to make a PhonicCharacter off of a char.
     * A check is performed to determine if the char is a vowel or not.
@@ -43,6 +51,75 @@ public class PhonicCharacter
       {
          if (character == VOWELS[i]) _vowel = true;
       }
+   }
+   
+   /**
+    * Sets a character as the given diagraph, and returns whether or
+    * not the letters were accepted diagraphs. 
+    * @param diagraph
+    * @return
+    */
+   public boolean setDiagraph(String diagraph)
+   {
+      boolean done = false;
+      
+      // Checks that it is a diagraph
+      for (int i = 0; i < DIAGRAPHS.length && !done; i++)
+      {
+         if (diagraph.toLowerCase().equals(DIAGRAPHS[i])) done = true;
+      }
+      
+      if (done)
+      {
+         _character = diagraph.toLowerCase();
+      }
+      return done;
+   }
+   
+   /**
+    * Sets the letters as an r controlled combo.
+    * returns true if was an r controlled vowel. 
+    * @param letters
+    * @return
+    */
+   public boolean setRControlled(String letters)
+   {
+      boolean done = false;
+      
+      // Checks that it is an r controlled vowel
+      for (int i = 0; i < R_CONTROLLED_VOWELS.length && !done; i++)
+      {
+         if (letters.toLowerCase().equals(R_CONTROLLED_VOWELS[i])) done = true;
+      }
+      
+      if (done)
+      {
+         _character = letters.toLowerCase();
+      }
+      return done;
+   }
+   
+   /**
+    * Sets a character to a dipthong and returns
+    * whether it worked or not. 
+    * @param letters
+    * @return
+    */
+   public boolean setDipthong(String letters)
+   {
+      boolean done = false;
+      
+      // Checks that it is an dipthong
+      for (int i = 0; i < DIPTHONGS.length && !done; i++)
+      {
+         if (letters.toLowerCase().equals(DIPTHONGS[i])) done = true;
+      }
+      
+      if (done)
+      {
+         _character = letters.toLowerCase();
+      }
+      return done;
    }
 
    /**
