@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -9,6 +10,16 @@ import java.util.ArrayList;
  */
 public class Pronunciation
 {
+   private final static String[] FIRST_SYLLABLE_EXCEPTIONS = {
+                                                       "de",
+                                                       "re",
+                                                       "ex",
+                                                       "in",
+                                                       "po",
+                                                       "pro",
+                                                       "a"
+                                                       };
+  
    /**
     * Currently runs a test on a series of words to see the output 
     * PhonicCharacters.
@@ -27,6 +38,7 @@ public class Pronunciation
                              "fiction",
                              "possession",
                              "chosen",
+                             "hate"
                              };
       
       // Array of resultant PhonicCharacters after translation
@@ -39,8 +51,31 @@ public class Pronunciation
          System.out.println(testString[i]);
          System.out.print("  ");
          letters = toPhonic(testString[i]);
+         /*
+          * Completely for Debug, prints off the syllables with a slash in the middle of splits.
+          * This is in this location instead of int the main because syllables aren't important for the end product. 
+          */
+         for (int j = 0; j < letters.size(); j++)
+         {
+             System.out.print(letters.get(j).toString() + " ");
+         }
          System.out.println();
       }
+   }
+   
+   public static ArrayList<File> wordToFile(String word)
+   {
+      ArrayList<PhonicCharacter> phonChars;
+      ArrayList<File> files = new ArrayList<>(word.length());
+  
+      phonChars = toPhonic(word);
+      for (PhonicCharacter phonChar : phonChars)
+      {
+         String fileName = phonChar.toString() + ".wav";
+         files.add(new File(fileName));
+      }
+
+      return files;
    }
    
    /**
@@ -75,33 +110,87 @@ public class Pronunciation
          // Checks to set any vowels as silent so syllables can be formed.
          if (wasVowel && letters.get(i).isVowel())
          {
-            letters.get(i).setSilent(true);
+            if (!letters.get(i - 1).getChar().equals("i")) letters.get(i).setSilent(true);
+            else letters.get(i).setAccent(true);
+            
+            // Sets the previous letter accented *************************************************Could be a bad interp for rules
+            letters.get(i - 1).setAccent(true);
          }
          // Sets the previous character to the current for the next iteration.
          wasVowel = letters.get(i).isVowel();
       }
       // Checks if the last letter is an 'e' in which case it is silent (hopefully)
-      if (letters.get(letters.size() - 1).getChar() == "e") letters.get(letters.size() - 1).setSilent(true);
+      boolean done = false;
+      int index = letters.size() - 1;
+      if (letters.get(index).getChar().equals("e"))
+      {
+         letters.get(index).setSilent(true);
+         while (!done)
+         {
+            index--;
+            if (index < 0) done = true;
+            if (letters.get(index).isVowel())
+            {
+               letters.get(index).setAccent(true);
+               done = true;
+            }
+         }
+      }
       
       // Calls the toSyllables method to now apply rules which require syllables. 
       syllables = toSyllables(letters);
       
-      /*
-       * Completely for Debug, prints off the syllables with a slash in the middle of splits.
-       * This is in this location instead of int the main because syllables aren't important for the end product. 
-       */
-      for (int i = 0; i < syllables.size(); i++)
-      {
-         for (int j = 0; j < syllables.get(i).size(); j++)
-         {
-            System.out.print(syllables.get(i).get(j).toString());
-         }
-         if (i + 1 < syllables.size()) System.out.print("/");
-      }
-      
+      syllables = accentRules(syllables);
+      letters = condense(syllables);      
       return letters;
    }
    
+   /**
+    * 
+    * @param letters
+    * @return
+    */
+   private static ArrayList<PhonicCharacter> condense(ArrayList<ArrayList<PhonicCharacter>> letters)
+   {
+      // An ArrayList of the syllables. 
+      ArrayList<PhonicCharacter> phonChars = new ArrayList<PhonicCharacter>();
+      
+      // variable to see whether prev char was constenant
+      PhonicCharacter prevChar;
+      
+      for (int i = 0; i < letters.size(); i++)
+      {
+         for (int j = 0; j < letters.get(i).size(); j++)
+         {
+            if (!letters.get(i).get(j).isSilent()) phonChars.add(letters.get(i).get(j));
+         }
+      }
+      prevChar = phonChars.get(0);
+      for (int i = 1; i < phonChars.size(); i++)
+      {
+         if (!phonChars.get(i).isVowel() && !prevChar.isVowel())
+         {
+            // Activates if Diagraph detected
+            if (phonChars.get(i-1).setDiagraph(phonChars.get(i-1).getChar() + phonChars.get(i).getChar()) || phonChars.get(i-1).getChar().equals(phonChars.get(i).getChar()))
+            {
+               phonChars.remove(i);
+               // i--;?
+            }
+         }
+         else if (prevChar.isVowel() && phonChars.get(i-1).setRControlled(phonChars.get(i-1).getChar() + phonChars.get(i).getChar()))
+         {
+            phonChars.remove(i);
+            // i--;?
+         }
+         else if (prevChar.getChar().equals("o") && phonChars.get(i-1).setDipthong(phonChars.get(i-1).getChar() + phonChars.get(i).getChar()))
+         {
+            phonChars.remove(i);
+            // i--;?
+         }
+      }
+      
+      return phonChars;
+   }
    /**
     * Takes an ArrayList of unanalyzed (with only the determination between vowels
     * and not vowels set) and breaks this ArrayList into a new ArrayList with 
@@ -127,6 +216,15 @@ public class Pronunciation
       // following the formula: Syllable# = vowel# - silentVowel# - dipthong#
       for (int i = 0; i < letters.size(); i++)
       {
+         // Sometimes "c" is read as "s"
+         if (prevChar == "c" && (letters.get(i).getChar() == "e" 
+                                 || letters.get(i).getChar() == "i" 
+                                 || letters.get(i).getChar() == "y"))
+         {
+            letters.set(i - 1, new PhonicCharacter('s'));
+         }
+         
+         
          // Simply doesn't count a vowel if silent, resulting in the 
          // - silentVowel# part of the equation.
          if (letters.get(i).isVowel() && !letters.get(i).isSilent())
@@ -140,8 +238,6 @@ public class Pronunciation
                                  || (letters.get(i).getChar() == "o")))
          {
             dipthongCount++;
-            // Temp Debug. Please remove ******************************************************************************************************
-            System.out.println("Dipthong");
          }
          prevChar = letters.get(i).getChar();
       }
@@ -268,5 +364,35 @@ public class Pronunciation
       return syllables;
    }
    
+   private static ArrayList<ArrayList<PhonicCharacter>> accentRules(ArrayList<ArrayList<PhonicCharacter>> syllables)
+   {
+      // First syllable of multiple usually accented. Unless first syllable of a specified list.
+      if (syllables.size() > 1)
+      {
+         boolean done = false;
+         StringBuilder firstSyllable = new StringBuilder(syllables.get(0).size());
+         for (PhonicCharacter character : syllables.get(0))
+         {
+            firstSyllable.append(character.getChar());
+         }
+         for (int i = 0; i < syllables.get(0).size() && !done; i++)
+         {
+            if (firstSyllable.toString().equals(FIRST_SYLLABLE_EXCEPTIONS[i]))
+            {
+               done = true;
+            }
+         }
+         for (int i = 0; i < syllables.get(0).size() && !done; i++)
+         {
+            if (syllables.get(0).get(i).isVowel())
+            {
+               syllables.get(0).get(i).setVowel(true);
+               done = true;
+            }
+         }
+      }
+      
+      return syllables;
+   }
 
 }
