@@ -63,19 +63,18 @@ public class Pronunciation
       }
    }
    
-   public static ArrayList<File> wordToFile(ArrayList<String> words)
+   public static ArrayList<File> wordToFile(String word)
    {
       ArrayList<PhonicCharacter> phonChars;
-      ArrayList<File> files = new ArrayList<>(words.size());
-      for (String word : words)
+      ArrayList<File> files = new ArrayList<>(word.length());
+  
+      phonChars = toPhonic(word);
+      for (PhonicCharacter phonChar : phonChars)
       {
-         phonChars = toPhonic(word);
-         for (PhonicCharacter phonChar : phonChars)
-         {
-            String fileName = phonChar.toString() + ".wav";
-            files.add(new File(fileName));
-         }
+         String fileName = phonChar.toString() + ".wav";
+         files.add(new File(fileName));
       }
+
       return files;
    }
    
