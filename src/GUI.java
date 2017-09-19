@@ -57,20 +57,19 @@ public class GUI extends JPanel
 							(absFilePath);
 
 					AudioParser audioParser = new AudioParser();
-
 					JFrame newImageFrame = new JFrame();
 					JLabel imageHolder = new JLabel(new ImageIcon
 							("DejagerMaistro.jpg"));
 					newImageFrame.add(imageHolder);
 					newImageFrame.setSize(imageHolder.getPreferredSize());
 					newImageFrame.setVisible(true);
-
 					for ( String word : listOfWords )
 					{
 						for ( File file : Pronunciation.wordToFile(word) )
 						{
 							try
 							{
+								System.out.println("File name = " + file);
 								audioParser.addAudio(file);
 							}
 							catch (UnsupportedAudioFileException e)
@@ -79,7 +78,6 @@ public class GUI extends JPanel
 							}
 						}
 					}
-
 					Clip clip;
 
 					try

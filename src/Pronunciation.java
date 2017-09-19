@@ -65,13 +65,16 @@ public class Pronunciation
    
    public static ArrayList<File> wordToFile(String word)
    {
+      // filepath to add to the desired file to get universal path
+      String filePath = System.getProperty("user.home") + "/IdeaProjects/VoiceReader/src/Sounds/";
+
       ArrayList<PhonicCharacter> phonChars;
       ArrayList<File> files = new ArrayList<>(word.length());
   
       phonChars = toPhonic(word);
       for (PhonicCharacter phonChar : phonChars)
       {
-         String fileName = phonChar.toString() + ".wav";
+         String fileName = filePath + phonChar.toString() + ".wav";
          files.add(new File(fileName));
       }
 
@@ -82,7 +85,7 @@ public class Pronunciation
     * Takes an input String of alphabetical characters and after a brief
     * bit of witchcraft, produces an arrayList of PhonicCharacters.
     * 
-    * @param String input as the word to translate.
+    * @param input as the word to translate.
     * @return an ArrayList of the translated PhonicCharacters.
     */
    public static  ArrayList<PhonicCharacter> toPhonic (String input)
