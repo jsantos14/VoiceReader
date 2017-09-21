@@ -14,6 +14,7 @@ import java.util.ArrayList;
  */
 public class GUI extends JPanel
 {
+
 	private final JFrame frame;
 
 	public GUI()
