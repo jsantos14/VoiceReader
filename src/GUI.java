@@ -69,6 +69,7 @@ public class GUI extends JPanel
 						{
 							try
 							{
+
 								audioParser.addAudio(file);
 							}
 							catch (UnsupportedAudioFileException e)

@@ -74,6 +74,7 @@ public class Pronunciation
       phonChars = toPhonic(word);
       for (PhonicCharacter phonChar : phonChars)
       {
+         System.out.println(phonChar.toString() + ", ");
          String fileName = filePath + phonChar.toString() + ".wav";
          files.add(new File(fileName));
       }
